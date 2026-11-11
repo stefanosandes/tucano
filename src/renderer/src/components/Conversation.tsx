@@ -1174,6 +1174,8 @@ function RunSteps({ message }: { message: Message }): ReactNode {
   const total = run.steps.reduce((acc, st) => acc + (st.ms ?? 0), 0)
   const failed = run.steps.filter((st) => st.status === 'error').length
   const current = [...run.steps].reverse().find((st) => st.status === 'running')
+  // Closed while working: the line says what the step is on (the command, the file), so it changes as it goes.
+  const currentTarget = working && !open ? (current?.detail || current?.input)?.split('\n')[0] : undefined
 
   return (
     <div className={`steps ${open ? 'is-open' : ''} ${working ? 'is-working' : ''}`}>
@@ -1205,6 +1207,11 @@ function RunSteps({ message }: { message: Message }): ReactNode {
             {run.steps.length} {L(`passo${run.steps.length === 1 ? '' : 's'}`, `step${run.steps.length === 1 ? '' : 's'}`)}
             {total > 0 && ` · ${duration(total)}`}
           </span>
+        )}
+        {currentTarget && (
+          <code key={current!.id} className="steps__now">
+            {currentTarget}
+          </code>
         )}
         {failed > 0 && <span className="steps__failed">{failed} {L('com falha', 'failed')}</span>}
         {working && <span className="steps__elapsed">{duration(Math.max(0, now - message.at))}</span>}

@@ -1409,6 +1409,15 @@ h3 {
   --pop-y: 0;
   animation: pop var(--dur-enter) var(--ease-spring) backwards;
 }
+.steps__now {
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11.5px;
+  color: var(--text-3);
+  animation: fade var(--dur-base) var(--ease-out) backwards;
+}
 .steps__elapsed {
   font-variant-numeric: tabular-nums;
   color: var(--text-3);
