@@ -286,6 +286,8 @@ describe('9. two wordings', () => {
     expect(settingsPatchError({ chainDepth: 5 })).toBeUndefined() // the limit on agent replies in a row
     expect(settingsPatchError({ chainDepth: 'muitas' })).toBeTruthy()
     expect(settingsPatchError({ quota: 1 })).not.toMatch(/quota/)
+    expect(settingsPatchError({ stepsWhileWorking: 'line' })).toBeUndefined() // a reply's steps in one line while it works
+    expect(settingsPatchError({ stepsWhileWorking: 'closed' })).toBeTruthy()
   })
   it('the router’s limit note reads as one sentence, no parentheses around the reason', async () => {
     const db = new Db(join(tmp(), 'tucano.db'))

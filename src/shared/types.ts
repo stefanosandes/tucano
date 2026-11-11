@@ -462,6 +462,7 @@ export interface Settings {
   }
   folded?: string[] // the ids of what I folded in the sidebar
   sounds?: boolean // the toucan's chirp on a notification; unset: on
+  stepsWhileWorking?: 'open' | 'line' // a reply at work: its steps listed as they go, or one line that changes; unset: open
   seenVersion?: string // the last version whose news I closed; an update past it shows what's new once
   accounts?: Account[] // more logins of Claude Code or Codex, beside the one each already has
 }

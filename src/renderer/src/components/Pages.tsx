@@ -2479,6 +2479,30 @@ export function SettingsPage(): ReactNode {
         {pane('geral') && admin && <VoiceCard />}
 
         {pane('geral') && (
+          <Card title={L('Conversas', 'Conversations')}>
+            <div className="field">
+              <span className="field__label">{L('Passos enquanto o agente trabalha', 'Steps while the agent works')}</span>
+              <div className="segmented" role="radiogroup" aria-label={L('Passos enquanto o agente trabalha', 'Steps while the agent works')}>
+                {(['open', 'line'] as const).map((mode) => {
+                  const active = (settings.stepsWhileWorking ?? 'open') === mode
+                  return (
+                    <button key={mode} type="button" role="radio" aria-checked={active} className={active ? 'is-active' : ''} onClick={() => updateSettings({ stepsWhileWorking: mode })}>
+                      {mode === 'open' ? L('Lista aberta', 'Open list') : L('Uma linha', 'One line')}
+                    </button>
+                  )
+                })}
+              </div>
+              <span className="hint">
+                {L(
+                  'Uma linha: só o que o agente está fazendo agora, mudando a cada passo. A lista abre num clique. Muda só pra você.',
+                  'One line: only what the agent is doing now, changing at each step. The list opens on a click. It changes only for you.'
+                )}
+              </span>
+            </div>
+          </Card>
+        )}
+
+        {pane('geral') && (
           <Card title={L('Notificações', 'Notifications')}>
             <div className="key-row">
               <Icon name="volume" />

@@ -1160,10 +1160,12 @@ function useNow(on: boolean): number {
 // steps it took. The steps themselves open on a click.
 function RunSteps({ message }: { message: Message }): ReactNode {
   const run = message.run!
-  // Open while the agent works, so its steps read as they go, unless the person closes it; closed after.
+  // Open while the agent works, so its steps read as they go, unless the person closes it or chose
+  // one line in the settings; closed after.
   const [toggled, setOpen] = useState<boolean | null>(null)
   const working = run.status === 'working'
-  const open = toggled ?? working
+  const listWhileWorking = useStore((s) => s.settings.stepsWhileWorking !== 'line')
+  const open = toggled ?? (working && listWhileWorking)
   const now = useNow(working)
   // Just finished: the pulse turns into a green check for a moment, then the chevron is back.
   const justDone = useJustEnded(working, 1600) && run.status === 'done'

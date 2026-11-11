@@ -24,6 +24,7 @@ const base: Settings = {
   theme: 'dark',
   language: 'pt',
   sounds: false,
+  stepsWhileWorking: 'line',
   folded: ['section:dms'],
   channelLayout: { loose: ['c1'], groups: [] },
   seenVersion: '0.2.10',
@@ -73,6 +74,7 @@ describe('display preferences per person', () => {
     expect(people.settingsFor(bia, base).onboarding).toEqual({ done: true })
     expect(s.seenVersion).toBe('0.2.10')
     expect(s.sounds).toBeUndefined()
+    expect(s.stepsWhileWorking).toBeUndefined()
     expect(s.folded).toBeUndefined()
     expect(s.channelLayout).toBeUndefined()
     expect(s.workspaceName).toBe('Ana') // the rest is the Tucano's
@@ -80,10 +82,10 @@ describe('display preferences per person', () => {
 
   it("a member's change is kept on them only; the shared part comes back for the settings", () => {
     const { db, people, ana, bia, dani } = team()
-    const rest = people.takePrefs(bia, { theme: 'light', language: 'en', sounds: true, folded: ['section:agents'], channelLayout: { loose: [], groups: [] }, seenVersion: '0.3.0', onboarding: { done: true, checklistHidden: true } })
+    const rest = people.takePrefs(bia, { theme: 'light', language: 'en', sounds: true, stepsWhileWorking: 'line', folded: ['section:agents'], channelLayout: { loose: [], groups: [] }, seenVersion: '0.3.0', onboarding: { done: true, checklistHidden: true } })
     expect(rest).toEqual({})
     const s = people.settingsFor(bia, base)
-    expect(s).toMatchObject({ theme: 'light', language: 'en', sounds: true, folded: ['section:agents'], seenVersion: '0.3.0', onboarding: { done: true, checklistHidden: true } })
+    expect(s).toMatchObject({ theme: 'light', language: 'en', sounds: true, stepsWhileWorking: 'line', folded: ['section:agents'], seenVersion: '0.3.0', onboarding: { done: true, checklistHidden: true } })
     // Nobody else's changed.
     expect(people.settingsFor(ana, base)).toBe(base)
     expect(people.settingsFor(dani, base).theme).toBe('dark')
@@ -98,7 +100,7 @@ describe('display preferences per person', () => {
 
   it('members may change only their own display preferences', () => {
     const { bia } = team()
-    for (const k of ['theme', 'sounds', 'channelLayout', 'folded', 'language', 'seenVersion', 'onboarding']) expect(can(bia, { kind: 'settings', keys: [k] })).toBe(true)
+    for (const k of ['theme', 'sounds', 'stepsWhileWorking', 'channelLayout', 'folded', 'language', 'seenVersion', 'onboarding']) expect(can(bia, { kind: 'settings', keys: [k] })).toBe(true)
     for (const k of ['workspaceName', 'context', 'paused', 'routerModel', 'approvalTtlHours']) expect(can(bia, { kind: 'settings', keys: [k] })).toBe(false)
   })
 
