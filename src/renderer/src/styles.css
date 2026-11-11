@@ -2057,6 +2057,10 @@ h3 {
   box-shadow: var(--shadow);
   font-weight: 500;
 }
+/* In a field, a choice is as wide as its options (the field is a column that stretches what it holds). */
+.field > .segmented:not(.segmented--wide) {
+  align-self: flex-start;
+}
 .segmented--wide {
   display: flex;
   margin-bottom: 12px;
