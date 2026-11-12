@@ -1166,6 +1166,10 @@ function RunSteps({ message }: { message: Message }): ReactNode {
   const working = run.status === 'working'
   const listWhileWorking = useStore((s) => s.settings.stepsWhileWorking !== 'line')
   const open = toggled ?? (working && listWhileWorking)
+  // A list opened or closed by hand while it worked folds with the rest when the work ends.
+  useEffect(() => {
+    if (!working) setOpen(null)
+  }, [working])
   const now = useNow(working)
   // Just finished: the pulse turns into a green check for a moment, then the chevron is back.
   const justDone = useJustEnded(working, 1600) && run.status === 'done'
@@ -1175,7 +1179,7 @@ function RunSteps({ message }: { message: Message }): ReactNode {
   const failed = run.steps.filter((st) => st.status === 'error').length
   const current = [...run.steps].reverse().find((st) => st.status === 'running')
   // Closed while working: the line says what the step is on (the command, the file), so it changes as it goes.
-  const currentTarget = working && !open ? (current?.detail || current?.input)?.split('\n')[0] : undefined
+  const currentTarget = working && !open ? (current?.detail || current?.input)?.split('\n')[0]?.slice(0, 200) : undefined
 
   return (
     <div className={`steps ${open ? 'is-open' : ''} ${working ? 'is-working' : ''}`}>

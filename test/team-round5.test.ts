@@ -288,6 +288,8 @@ describe('9. two wordings', () => {
     expect(settingsPatchError({ quota: 1 })).not.toMatch(/quota/)
     expect(settingsPatchError({ stepsWhileWorking: 'line' })).toBeUndefined() // a reply's steps in one line while it works
     expect(settingsPatchError({ stepsWhileWorking: 'closed' })).toBeTruthy()
+    expect(settingsPatchError({ stepsWhileWorking: true })).toBeTruthy()
+    expect(settingsPatchError({ stepsWhileWorking: null })).toBeUndefined() // back to the open list
   })
   it('the router’s limit note reads as one sentence, no parentheses around the reason', async () => {
     const db = new Db(join(tmp(), 'tucano.db'))
